@@ -1,0 +1,19 @@
+{
+    "version": "1.0.0",
+    "configurations": [
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Debug Redisc Server",
+            "program": "${workspaceFolder}\\src\\index.ts",
+            "preLaunchTask": "npm: build",
+            "sourceMaps": true,
+            "smartStep": true,
+            "internalConsoleOptions": "openOnSessionStart",
+            "outFiles": ["${workspaceFolder}/tmp/**/*.js"],
+            "env": {
+                "NODE_ENV": "development"
+            }
+        }
+    ]
+}
