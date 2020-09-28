@@ -22,6 +22,9 @@ export default (MONGODB_URI: string) => {
                 );
             });
     };
+
+    mongoose.set('useCreateIndex', true);
+
     connect();
 
     mongoose.connection.on('disconnected', connect);

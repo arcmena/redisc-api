@@ -1,7 +1,7 @@
 import chalk from 'chalk';
 
 import app from './app';
-import mongoose from './database/config';
+import mongoose from './config/database';
 
 const { PORT = 3030, MONGODB_URI } = process.env;
 
