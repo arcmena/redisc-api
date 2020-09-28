@@ -1,16 +1,20 @@
 /* eslint-disable import/prefer-default-export */
 import {
     Arg,
+    Ctx,
     Field,
     Mutation,
     ObjectType,
     Query,
     Resolver,
+    UseMiddleware,
 } from 'type-graphql';
 import { hash, compare } from 'bcrypt';
-import { sign } from 'jsonwebtoken';
 
-import User, { UserTypes } from '../models/User';
+import User, { UserTypes } from '../../models/User';
+import { Context } from '../Context';
+import { createAccessToken, createRefreshToken } from '../../utils/Auth';
+import isAuth from '../isAuth';
 
 @ObjectType()
 class LoginResponse {
@@ -23,6 +27,12 @@ export class UserResolver {
     @Query(() => [UserTypes])
     users() {
         return User.find();
+    }
+
+    @Query(() => String)
+    @UseMiddleware(isAuth)
+    protected(@Ctx() { payload }: Context) {
+        return `you have power ${payload?.userID}!`;
     }
 
     @Mutation(() => Boolean)
@@ -47,6 +57,7 @@ export class UserResolver {
     async auth(
         @Arg('email') email: string,
         @Arg('password') password: string,
+        @Ctx() { res }: Context,
     ): Promise<LoginResponse> {
         try {
             const user = await User.findOne({ email });
@@ -55,12 +66,10 @@ export class UserResolver {
                 throw new Error('Invalid credentials');
             }
 
+            res.cookie('disker', createRefreshToken(user), { httpOnly: true });
+
             return {
-                accessToken: sign(
-                    { userId: user.id, email: user.email },
-                    process.env.JWT_SECRET || '',
-                    { expiresIn: '1d' },
-                ),
+                accessToken: createAccessToken(user),
             };
         } catch (error) {
             throw new Error(error);

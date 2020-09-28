@@ -13,4 +13,4 @@ app.listen(PORT, () => {
     );
 });
 
-mongoose(MONGODB_URI || 'mongodb://localhost:27017/redisc');
+mongoose(MONGODB_URI!);

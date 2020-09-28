@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { ApolloServer } from 'apollo-server-express';
 import { buildSchema } from 'type-graphql';
 
-import { UserResolver } from './graphql/UserResolver';
+import { UserResolver } from './graphql/Resolvers/UserResolver';
 
 const router = Router();
 
@@ -17,6 +17,7 @@ router.get('/', (_req, res) => {
         schema: await buildSchema({
             resolvers: [UserResolver],
         }),
+        context: ({ req, res }) => ({ req, res }),
     });
 
     apolloServer.applyMiddleware({ app: router });

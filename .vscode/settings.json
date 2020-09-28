@@ -5,6 +5,7 @@
         ".eslintrc": true,
         ".eslintignore": true,
         ".prettierrc": true,
+        ".huskyrc": true,
         "tsconfig.json": true
     }
 }
