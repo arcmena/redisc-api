@@ -3,5 +3,5 @@ import { Request, Response } from 'express';
 export interface Context {
     req: Request;
     res: Response;
-    payload?: { userID: string };
+    payload?: { userId: string };
 }

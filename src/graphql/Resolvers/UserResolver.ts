@@ -13,8 +13,8 @@ import { hash, compare } from 'bcrypt';
 
 import User, { UserTypes } from '../../models/User';
 import { Context } from '../Context';
-import { createAccessToken, createRefreshToken } from '../../utils/Auth';
-import isAuth from '../isAuth';
+import { createAccessToken, createRefreshToken } from '../../middlewares/Auth';
+import isAuth from '../../middlewares/isAuth';
 
 @ObjectType()
 class LoginResponse {
@@ -32,7 +32,8 @@ export class UserResolver {
     @Query(() => String)
     @UseMiddleware(isAuth)
     protected(@Ctx() { payload }: Context) {
-        return `you have power ${payload?.userID}!`;
+        console.log(payload);
+        return `you have power ${payload?.userId}!`;
     }
 
     @Mutation(() => Boolean)
