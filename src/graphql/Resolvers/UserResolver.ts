@@ -13,7 +13,7 @@ import { hash, compare } from 'bcrypt';
 
 import User, { UserTypes } from '../../models/User';
 import { Context } from '../Context';
-import { createAccessToken, createRefreshToken } from '../../middlewares/Auth';
+import { createAccessToken, createRefreshToken } from '../../utils/Auth';
 import isAuth from '../../middlewares/isAuth';
 
 @ObjectType()

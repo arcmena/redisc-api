@@ -1,4 +1,5 @@
 import express, { json } from 'express';
+import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import 'reflect-metadata';
@@ -11,6 +12,7 @@ const app = express();
 
 app.use(cors());
 app.use(json());
+app.use(cookieParser());
 
 app.get('/', (_req, res) => {
     res.send({

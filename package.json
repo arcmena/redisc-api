@@ -13,10 +13,12 @@
         "lint": "tsc --noEmit && eslint src/**/*.ts{,x}"
     },
     "dependencies": {
+        "@types/cookie-parser": "^1.4.2",
         "apollo-server-express": "^2.18.1",
         "bcrypt": "^5.0.0",
         "chalk": "^4.1.0",
         "class-validator": "^0.12.2",
+        "cookie-parser": "^1.4.5",
         "cors": "^2.8.5",
         "dotenv": "^8.2.0",
         "express": "^4.17.1",
