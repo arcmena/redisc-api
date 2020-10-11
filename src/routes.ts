@@ -11,7 +11,7 @@ const router = Router();
 
 router.get('/', (_req, res) => {
     res.send({
-        version: '1.0.0',
+        version: '0.0.1',
     });
 });
 
@@ -23,10 +23,12 @@ router.post('/refresh_token', async (req, res) => {
     let payload: any = null;
 
     try {
-        payload = verify(token, process.env.JWT_SECRET!);
+        payload = verify(token, process.env.JWT_SECRET!, (error, response) => {
+            if (error || !response) throw new Error(error);
+            return response;
+        });
     } catch (error) {
-        console.log(error);
-        if (!token) return res.send({ ok: false, accesToken: '' });
+        res.status(401).send({ ok: false, error: error.message });
     }
 
     const user = await User.findById({ _id: payload.userId });

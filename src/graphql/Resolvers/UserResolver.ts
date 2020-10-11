@@ -13,7 +13,7 @@ import { hash, compare } from 'bcrypt';
 
 import User, { UserTypes } from '../../models/User';
 import { Context } from '../Context';
-import { createAccessToken, createRefreshToken } from '../../utils/Auth';
+import { createAccessToken } from '../../utils/Auth';
 import isAuth from '../../middlewares/isAuth';
 
 @ObjectType()
@@ -27,6 +27,11 @@ export class UserResolver {
     @Query(() => [UserTypes])
     users() {
         return User.find();
+    }
+
+    @Query(() => String)
+    hello() {
+        return 'Hello';
     }
 
     @Query(() => String)
@@ -67,7 +72,7 @@ export class UserResolver {
                 throw new Error('Invalid credentials');
             }
 
-            res.cookie('disker', createRefreshToken(user), { httpOnly: true });
+            res.cookie('disker', createAccessToken(user), { httpOnly: true });
 
             return {
                 accessToken: createAccessToken(user),

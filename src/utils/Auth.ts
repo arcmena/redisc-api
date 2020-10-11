@@ -10,11 +10,3 @@ export const createAccessToken = (user: UserInterface) => {
         { expiresIn: '15m' },
     );
 };
-
-export const createRefreshToken = (user: UserInterface) => {
-    return sign(
-        { userId: user.id, email: user.email },
-        process.env.JWT_SECRET!,
-        { expiresIn: '1d' },
-    );
-};
