@@ -4,7 +4,7 @@ import { buildSchema } from 'type-graphql';
 import { verify } from 'jsonwebtoken';
 
 import { UserResolver } from './graphql/Resolvers/UserResolver';
-import { createAccessToken } from './utils/Auth';
+import createAccessToken from './utils/Auth';
 import User from './models/User';
 
 const router = Router();
@@ -46,7 +46,7 @@ router.post('/refresh_token', async (req, res) => {
         context: ({ req, res }) => ({ req, res }),
     });
 
-    apolloServer.applyMiddleware({ app: router });
+    apolloServer.applyMiddleware({ app: router, cors: false });
 })();
 
 export default router;

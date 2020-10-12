@@ -3,10 +3,12 @@ import { sign } from 'jsonwebtoken';
 
 import { UserInterface } from '../models/User';
 
-export const createAccessToken = (user: UserInterface) => {
+const createAccessToken = (user: UserInterface) => {
     return sign(
         { userId: user.id, email: user.email },
         process.env.JWT_SECRET!,
-        { expiresIn: '15m' },
+        { expiresIn: '1d' },
     );
 };
+
+export default createAccessToken;
