@@ -1,13 +1,20 @@
-import { Router } from 'express';
+import { Router, static as Static } from 'express';
 import { ApolloServer } from 'apollo-server-express';
 import { buildSchema } from 'type-graphql';
-import { verify } from 'jsonwebtoken';
+import { resolve } from 'path';
+import multer from 'multer';
 
 import { UserResolver } from './graphql/Resolvers/UserResolver';
-import createAccessToken from './utils/Auth';
-import User from './models/User';
+import { ProductResolver } from './graphql/Resolvers/ProductResolver';
+
+import RefreshToken from './api/RefreshToken';
+import FileUpload from './api/FileUpload';
+
+import multerConfig from './config/multer';
 
 const router = Router();
+
+const upload = multer(multerConfig);
 
 router.get('/', (_req, res) => {
     res.send({
@@ -15,33 +22,16 @@ router.get('/', (_req, res) => {
     });
 });
 
-router.post('/refresh_token', async (req, res) => {
-    const token = req.cookies.disker;
+router.post('/refresh_token', RefreshToken);
 
-    if (!token) return res.send({ ok: false, accesToken: '' });
+router.post('/cover_upload', upload.single('image'), FileUpload);
 
-    let payload: any = null;
-
-    try {
-        payload = verify(token, process.env.JWT_SECRET!, (error, response) => {
-            if (error || !response) throw new Error(error);
-            return response;
-        });
-    } catch (error) {
-        res.status(401).send({ ok: false, error: error.message });
-    }
-
-    const user = await User.findById({ _id: payload.userId });
-
-    if (!user) return res.send({ ok: false, accesToken: '' });
-
-    return res.send({ ok: true, accesToken: createAccessToken(user) });
-});
+router.use('/covers', Static(resolve(__dirname, '..', 'uploads')));
 
 (async () => {
     const apolloServer = new ApolloServer({
         schema: await buildSchema({
-            resolvers: [UserResolver],
+            resolvers: [UserResolver, ProductResolver],
         }),
         context: ({ req, res }) => ({ req, res }),
     });

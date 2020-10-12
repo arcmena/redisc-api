@@ -8,6 +8,7 @@ export default (MONGODB_URI: string) => {
             .connect(MONGODB_URI, {
                 useNewUrlParser: true,
                 useUnifiedTopology: true,
+                useFindAndModify: false,
             })
             .then(() => {
                 return console.log(

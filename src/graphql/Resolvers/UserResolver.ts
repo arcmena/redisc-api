@@ -37,7 +37,6 @@ export class UserResolver {
     @Query(() => String)
     @UseMiddleware(isAuth)
     protected(@Ctx() { payload }: Context) {
-        console.log(payload);
         return `you have power ${payload?.userId}!`;
     }
 
@@ -52,7 +51,7 @@ export class UserResolver {
         try {
             await User.create({ name, email, password: passwordHash });
         } catch (error) {
-            console.log(error);
+            console.error(error);
             return false;
         }
 
