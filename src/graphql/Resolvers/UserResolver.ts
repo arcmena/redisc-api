@@ -44,9 +44,6 @@ export class UserResolver {
         try {
             const user = await User.findById(userId);
 
-            console.log(payload);
-            console.log(user);
-
             if (!user || String(user?._id) !== payload?.userId)
                 throw new Error('Operation not permited');
 
