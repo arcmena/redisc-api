@@ -12,10 +12,14 @@ export default async (req: Request, res: Response) => {
     let payload: any = null;
 
     try {
-        payload = verify(token, process.env.JWT_SECRET!, (error, response) => {
-            if (error || !response) throw new Error(error);
-            return response;
-        });
+        payload = verify(
+            token,
+            process.env.JWT_SECRET!,
+            (error: any, response: any) => {
+                if (error || !response) throw new Error(error);
+                return response;
+            },
+        );
     } catch (error) {
         res.status(401).send({ ok: false, error: error.message });
     }
