@@ -8,7 +8,6 @@ import {
     Query,
     Resolver,
     UseMiddleware,
-    ID,
 } from 'type-graphql';
 import { hash, compare } from 'bcrypt';
 
