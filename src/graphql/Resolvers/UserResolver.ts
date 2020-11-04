@@ -8,6 +8,7 @@ import {
     Query,
     Resolver,
     UseMiddleware,
+    ID,
 } from 'type-graphql';
 import { hash, compare } from 'bcrypt';
 
@@ -30,14 +31,30 @@ export class UserResolver {
     }
 
     @Query(() => String)
-    hello() {
-        return 'Hello';
-    }
-
-    @Query(() => String)
     @UseMiddleware(isAuth)
     protected(@Ctx() { payload }: Context) {
         return `you have power ${payload?.userId}!`;
+    }
+
+    @Query(() => UserTypes)
+    @UseMiddleware(isAuth)
+    async getUserInfo(
+        @Arg('userId') userId: string,
+        @Ctx() { payload }: Context,
+    ) {
+        try {
+            const user = await User.findById(userId);
+
+            console.log(payload);
+            console.log(user);
+
+            if (!user || String(user?._id) !== payload?.userId)
+                throw new Error('Operation not permited');
+
+            return user;
+        } catch (error) {
+            throw new Error(error);
+        }
     }
 
     @Mutation(() => Boolean)
