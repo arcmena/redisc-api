@@ -10,6 +10,17 @@ export class ProductResolver {
         return Product.find();
     }
 
+    @Query(() => [ProductTypes])
+    async filterProducts(@Arg('name') name: string) {
+        try {
+            const products = Product.find({ name: new RegExp(name, 'i') });
+
+            return products;
+        } catch (error) {
+            throw new Error(error);
+        }
+    }
+
     @Mutation(() => Boolean)
     async registerProduct(
         @Arg('id') _id: string,
