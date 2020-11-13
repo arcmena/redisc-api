@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import { Schema, Document, model as Model } from 'mongoose';
 import { ObjectType, Field, ID } from 'type-graphql';
 
@@ -11,12 +12,36 @@ export class UserTypes {
 
     @Field()
     email: string;
+
+    @Field({ nullable: true })
+    cpf: string;
+
+    @Field({ nullable: true })
+    birth_date: Date;
+
+    @Field({ nullable: true })
+    address: string;
+
+    @Field({ nullable: true })
+    town_city: string;
+
+    @Field({ nullable: true })
+    country: string;
+
+    @Field({ nullable: true })
+    postcode: string;
 }
 
 export interface UserInterface extends Document {
     name: string;
     email: string;
     password: string;
+    cpf?: string;
+    birth_date?: string;
+    address?: string;
+    town_city?: string;
+    country?: string;
+    postcode?: string;
 }
 
 const UserSchema: Schema = new Schema({
@@ -35,6 +60,31 @@ const UserSchema: Schema = new Schema({
     password: {
         type: String,
         required: true,
+    },
+    cpf: {
+        type: String,
+        required: false,
+        maxlength: 11,
+    },
+    birth_date: {
+        type: Date,
+        required: false,
+    },
+    address: {
+        type: String,
+        required: false,
+    },
+    town_city: {
+        type: String,
+        required: false,
+    },
+    country: {
+        type: String,
+        required: false,
+    },
+    postcode: {
+        type: String,
+        required: false,
     },
 });
 
