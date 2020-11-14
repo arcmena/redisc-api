@@ -38,12 +38,9 @@ export class UserResolver {
 
     @Query(() => UserTypes)
     @UseMiddleware(isAuth)
-    async getUserInfo(
-        @Arg('userId') userId: string,
-        @Ctx() { payload }: Context,
-    ) {
+    async getUserInfo(@Ctx() { payload }: Context) {
         try {
-            const user = await User.findById(userId);
+            const user = await User.findById(payload?.userId).populate('cart');
 
             if (!user || String(user?._id) !== payload?.userId)
                 throw new Error('Operation not permited');
