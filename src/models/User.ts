@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable camelcase */
 import { Schema, Document, model as Model } from 'mongoose';
 import { ObjectType, Field, ID } from 'type-graphql';
+import { ProductTypes } from './Product';
 
 @ObjectType()
 export class UserTypes {
@@ -30,6 +32,9 @@ export class UserTypes {
 
     @Field({ nullable: true })
     postcode: string;
+
+    @Field((_type) => [ProductTypes], { nullable: true })
+    cart: ProductTypes[];
 }
 
 export interface UserInterface extends Document {
@@ -42,6 +47,7 @@ export interface UserInterface extends Document {
     town_city?: string;
     country?: string;
     postcode?: string;
+    cart?: ProductTypes[];
 }
 
 const UserSchema: Schema = new Schema({
@@ -85,6 +91,10 @@ const UserSchema: Schema = new Schema({
     postcode: {
         type: String,
         required: false,
+    },
+    cart: {
+        type: Schema.Types.ObjectId,
+        ref: 'Product',
     },
 });
 
