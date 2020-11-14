@@ -7,7 +7,7 @@ import createAccessToken from '../utils/Auth';
 export default async (req: Request, res: Response) => {
     const token = req.cookies.disker;
 
-    if (!token) return res.send({ ok: false, accessToken: '' });
+    if (!token) return res.send({ accessToken: '' });
 
     let payload: any = null;
 
@@ -21,12 +21,12 @@ export default async (req: Request, res: Response) => {
             },
         );
     } catch (error) {
-        res.status(401).send({ ok: false, error: error.message });
+        res.status(401).send({ error: error.message });
     }
 
     const user = await User.findById({ _id: payload.userId });
 
-    if (!user) return res.send({ ok: false, accessToken: '' });
+    if (!user) return res.send({ accessToken: '' });
 
-    return res.send({ ok: true, accessToken: createAccessToken(user) });
+    return res.send({ accessToken: createAccessToken(user) });
 };
