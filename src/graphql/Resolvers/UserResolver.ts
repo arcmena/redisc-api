@@ -115,7 +115,7 @@ export class UserResolver {
                 throw new Error('Invalid credentials');
             }
 
-            res.cookie('disker', createAccessToken(user), { httpOnly: true });
+            res.cookie('disker', createAccessToken(user));
 
             return {
                 accessToken: createAccessToken(user),
