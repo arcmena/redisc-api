@@ -59,8 +59,6 @@ export class UserResolver {
         try {
             const user = await User.findById(userId).populate('cart');
 
-            console.log(user);
-
             return user;
         } catch (error) {
             throw new Error(error);
