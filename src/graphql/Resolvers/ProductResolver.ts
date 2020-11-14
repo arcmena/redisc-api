@@ -5,8 +5,13 @@ import Product, { ProductTypes } from '../../models/Product';
 
 @Resolver()
 export class ProductResolver {
+    @Query(() => ProductTypes)
+    async product(@Arg('_id') _id: string) {
+        return Product.findById(_id);
+    }
+
     @Query(() => [ProductTypes])
-    products() {
+    productsIndex() {
         return Product.find();
     }
 
