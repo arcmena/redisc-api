@@ -22,7 +22,7 @@ export class ProductTypes {
     image: string;
 }
 
-export interface IProduct extends Document {
+export interface ProductInterface extends Document {
     name?: string;
     description?: string;
     value?: number;
@@ -54,4 +54,4 @@ const ProductSchema: Schema = new Schema({
     },
 });
 
-export default Model<IProduct>('Product', ProductSchema);
+export default Model<ProductInterface>('Product', ProductSchema);
