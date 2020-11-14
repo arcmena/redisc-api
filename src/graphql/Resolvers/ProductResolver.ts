@@ -21,6 +21,15 @@ export class ProductResolver {
         }
     }
 
+    @Query(() => [ProductTypes])
+    async getRelatedProducts(@Arg('tag') tag: string) {
+        try {
+            return Product.find({ category: new RegExp(tag, 'i') });
+        } catch (error) {
+            throw new Error(error);
+        }
+    }
+
     @Mutation(() => Boolean)
     async registerProduct(
         @Arg('id') _id: string,
