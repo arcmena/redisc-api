@@ -12,6 +12,7 @@ import {
 import { hash, compare } from 'bcrypt';
 
 import User, { UserTypes } from '../../models/User';
+import Product from '../../models/Product';
 import { Context } from '../Context';
 import createAccessToken from '../../utils/Auth';
 import isAuth from '../../middlewares/isAuth';
@@ -26,7 +27,7 @@ class LoginResponse {
 export class UserResolver {
     @Query(() => [UserTypes])
     users() {
-        return User.find();
+        return User.find().populate('cart');
     }
 
     @Query(() => String)
@@ -48,6 +49,41 @@ export class UserResolver {
                 throw new Error('Operation not permited');
 
             return user;
+        } catch (error) {
+            throw new Error(error);
+        }
+    }
+
+    @Query(() => UserTypes)
+    async getUser(@Arg('userId') userId: string) {
+        try {
+            const user = await User.findById(userId).populate('cart');
+
+            console.log(user);
+
+            return user;
+        } catch (error) {
+            throw new Error(error);
+        }
+    }
+
+    @Mutation(() => Boolean)
+    async addProductToCart(
+        @Arg('userId') userId: string,
+        @Arg('productId') productId: string,
+    ) {
+        try {
+            const product = await Product.findById(productId);
+
+            if (!product)
+                throw new Error(`Product not found with ID ${productId}`);
+
+            await User.updateOne(
+                { _id: userId },
+                { $push: { cart: product.id } },
+            );
+
+            return true;
         } catch (error) {
             throw new Error(error);
         }
