@@ -92,10 +92,12 @@ const UserSchema: Schema = new Schema({
         type: String,
         required: false,
     },
-    cart: {
-        type: Schema.Types.ObjectId,
-        ref: 'Product',
-    },
+    cart: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Product',
+        },
+    ],
 });
 
 export default Model<UserInterface>('User', UserSchema);
