@@ -6,7 +6,7 @@ import Product, { ProductTypes } from '../../models/Product';
 @Resolver()
 export class ProductResolver {
     @Query(() => ProductTypes)
-    async product(@Arg('_id') _id: string) {
+    product(@Arg('_id') _id: string) {
         return Product.findById(_id);
     }
 
@@ -42,6 +42,7 @@ export class ProductResolver {
         @Arg('description') description: string,
         @Arg('value') value: number,
         @Arg('category') category: string,
+        @Arg('band') band: string,
     ) {
         try {
             await Product.findByIdAndUpdate(_id, {
@@ -49,6 +50,7 @@ export class ProductResolver {
                 description,
                 value,
                 category,
+                band,
             });
         } catch (error) {
             console.error(error);

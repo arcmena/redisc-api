@@ -13,6 +13,9 @@ export class ProductTypes {
     description: string;
 
     @Field({ nullable: true })
+    band: string;
+
+    @Field({ nullable: true })
     value: number;
 
     @Field({ nullable: true })
@@ -25,6 +28,7 @@ export class ProductTypes {
 export interface ProductInterface extends Document {
     name?: string;
     description?: string;
+    band?: string;
     value?: number;
     category?: string;
     image?: string;
@@ -32,6 +36,10 @@ export interface ProductInterface extends Document {
 
 const ProductSchema: Schema = new Schema({
     name: {
+        type: String,
+        default: null,
+    },
+    band: {
         type: String,
         default: null,
     },
